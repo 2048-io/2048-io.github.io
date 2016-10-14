@@ -95,6 +95,14 @@ h1.title {
   margin: 0;
   display: block;
   float: left;
+
+  a {
+    text-decoration: none;
+  }
+
+  .title-link-shade {
+    color: hsl(29, 17%, 68%);
+  }
 }
 
 @include keyframes(move-up) {
