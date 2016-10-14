@@ -54,12 +54,11 @@ h1.title {
   display: block;
   float: left; }
 
-h1.title a {
+h1.title .title-link {
   text-decoration: none; }
 
 h1.title .title-link-shade {
-  color: hsl(29, 17%, 68%);
-}
+  color: hsl(29, 17%, 68%); }
 
 @-webkit-keyframes move-up {
   0% {
