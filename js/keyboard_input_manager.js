@@ -83,7 +83,8 @@ KeyboardInputManager.prototype.listen = function () {
   gameContainer.addEventListener(this.eventTouchstart, function (event) {
     if ((!window.navigator.msPointerEnabled && event.touches.length > 1) ||
         event.targetTouches.length > 1 ||
-        self.targetIsInput(event)) {
+        self.targetIsInput(event) ||
+        self.targetIsLink(event)) {
       return; // Ignore if touching with more than 1 finger or touching input
     }
 
@@ -105,7 +106,8 @@ KeyboardInputManager.prototype.listen = function () {
   gameContainer.addEventListener(this.eventTouchend, function (event) {
     if ((!window.navigator.msPointerEnabled && event.touches.length > 0) ||
         event.targetTouches.length > 0 ||
-        self.targetIsInput(event)) {
+        self.targetIsInput(event) ||
+        self.targetIsLink(event)) {
       return; // Ignore if still touching with one or more fingers or input
     }
 
@@ -150,4 +152,8 @@ KeyboardInputManager.prototype.bindButtonPress = function (selector, fn) {
 
 KeyboardInputManager.prototype.targetIsInput = function (event) {
   return event.target.tagName.toLowerCase() === "input";
+};
+
+KeyboardInputManager.prototype.targetIsLink = function (event) {
+  return event.target.tagName.toLowerCase() === "a";
 };
