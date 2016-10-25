@@ -1,4 +1,5 @@
-function HTMLActuator() {
+function HTMLActuator(gameManager) {
+  this.gameManager = gameManager;
   this.tileContainer    = document.querySelector(".tile-container");
   this.scoreContainer   = document.querySelector(".score-container");
   this.bestContainer    = document.querySelector(".best-container");
@@ -142,7 +143,22 @@ HTMLActuator.prototype.message = function (won) {
 
   this.clearContainer(this.sharingContainer);
   this.sharingContainer.appendChild(this.scoreTweetButton());
-  twttr.widgets.load();
+
+  var tryToLoadTwitterWidgets = function() {
+    try {
+      twttr.widgets.load();
+    }
+    catch (e) {
+      setTimeout(tryToLoadTwitterWidgets, 1000);
+    }
+  };
+  tryToLoadTwitterWidgets();
+
+  if (this.gameManager.shouldDisplayMessageAppendix()) {
+    var appendixContainer = 
+      this.messageContainer.querySelector('.message-appendix');
+    appendixContainer.classList.add('visible');
+  }
 };
 
 HTMLActuator.prototype.clearMessage = function () {

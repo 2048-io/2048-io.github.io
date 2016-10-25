@@ -2,7 +2,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.size           = size; // Size of the grid
   this.inputManager   = new InputManager;
   this.storageManager = new StorageManager;
-  this.actuator       = new Actuator;
+  this.actuator       = new Actuator(this);
 
   this.startTiles     = 2;
 
@@ -11,6 +11,7 @@ function GameManager(size, InputManager, Actuator, StorageManager) {
   this.inputManager.on("keepPlaying", this.keepPlaying.bind(this));
 
   this.setup();
+  this.shouldDisplayMessageAppendix();
 }
 
 // Restart the game
@@ -269,4 +270,118 @@ GameManager.prototype.tileMatchesAvailable = function () {
 
 GameManager.prototype.positionsEqual = function (first, second) {
   return first.x === second.x && first.y === second.y;
+};
+
+
+GameManager.prototype.shouldDisplayMessageAppendix = function() {
+  var browserLanguage = this.storageManager.getBrowserLanguage();
+  if (browserLanguage === null) {
+    return this.loadAcceptLanguage(function(acceptLanguage) {
+      if (acceptLanguage === false) {
+        return;
+      }
+      this.storageManager.setBrowserLanguage(acceptLanguage);
+    }.bind(this));
+  }
+
+  var lang = this.pickAcceptLanguage(['ru'], browserLanguage);
+  if (lang === null) {
+    return false;
+  }
+
+  return true;
+}
+
+GameManager.prototype.loadAcceptLanguage = function (callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+        if (xhr.status != 200) {
+          return callback(false);;
+        }
+
+        try {
+          json = JSON.parse(xhr.responseText);
+        }
+        catch (e) {
+          return callback(false);
+        }
+
+        var headers = json.headers;
+        var key = 'Accept-Language';
+        if (!(key in headers)) {
+          return callback(false);
+        }
+
+        return callback(headers[key]);
+      }
+    };
+
+    xhr.open("GET", "https://httpbin.org/headers", true);
+    xhr.send();
+}
+
+// @link: https://github.com/opentable/accept-language-parser/
+GameManager.prototype.parseAcceptLanguage = function(al) {
+  var regex = /((([a-zA-Z]+(-[a-zA-Z]+){0,2})|\*)(;q=[0-1](\.[0-9]+)?)?)*/g;
+  var strings = (al || "").match(regex);
+  return strings.map(function(m){
+      if(!m){
+          return;
+      }
+
+      var bits = m.split(';');
+      var ietf = bits[0].split('-');
+      var hasScript = ietf.length === 3;
+
+      return {
+          code: ietf[0],
+          script: hasScript ? ietf[1] : null,
+          region: hasScript ? ietf[2] : ietf[1],
+          quality: bits[1] ? parseFloat(bits[1].split('=')[1]) : 1.0
+      };
+  }).filter(function(r){
+          return r;
+      }).sort(function(a, b){
+          return b.quality - a.quality;
+      });
+};
+
+// @link: https://github.com/opentable/accept-language-parser/
+GameManager.prototype.pickAcceptLanguage = function(supportedLanguages, acceptLanguage){
+  if (!supportedLanguages || !supportedLanguages.length || !acceptLanguage) {
+      return null;
+  }
+
+  var accept = this.parseAcceptLanguage(acceptLanguage);
+
+  var supported = supportedLanguages.map(function(support){
+      var bits = support.split('-');
+      var hasScript = bits.length === 3;
+
+      return {
+          code: bits[0],
+          script: hasScript ? bits[1] : null,
+          region: hasScript ? bits[2] : bits[1]
+      };
+  });
+
+  for (var i = 0; i < accept.length; i++) {
+      var lang = accept[i];
+      var langCode = lang.code.toLowerCase();
+      var langRegion = lang.region ? lang.region.toLowerCase() : lang.region;
+      var langScript = lang.script ? lang.script.toLowerCase() : lang.script;
+      for (var j = 0; j < supported.length; j++) {
+          var supportedCode = supported[j].code.toLowerCase();
+          var supportedScript = supported[j].script ? supported[j].script.toLowerCase() : supported[j].script;
+          var supportedRegion = supported[j].region ? supported[j].region.toLowerCase() : supported[j].region;
+          if (langCode === supportedCode &&
+            (!langScript || langScript === supportedScript) &&
+            (!langRegion || langRegion === supportedRegion)) {
+              return supportedLanguages[j];
+          }
+      }
+  }
+
+  return null;
 };

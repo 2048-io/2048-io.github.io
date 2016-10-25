@@ -22,6 +22,7 @@ function LocalStorageManager() {
   this.bestScoreKey     = "bestScore";
   this.gameStateKey     = "gameState";
   this.noticeClosedKey  = "noticeClosed";
+  this.browserLanguage  = "browserLanguage";
 
   var supported = this.localStorageSupported();
   this.storage = supported ? window.localStorage : window.fakeStorage;
@@ -70,3 +71,11 @@ LocalStorageManager.prototype.setNoticeClosed = function (noticeClosed) {
 LocalStorageManager.prototype.getNoticeClosed = function () {
   return JSON.parse(this.storage.getItem(this.noticeClosedKey) || "false");
 };
+
+LocalStorageManager.prototype.getBrowserLanguage = function () {
+  return this.storage.getItem(this.browserLanguage);
+}
+
+LocalStorageManager.prototype.setBrowserLanguage = function (lang) {
+  this.storage.setItem(this.browserLanguage, lang);
+}

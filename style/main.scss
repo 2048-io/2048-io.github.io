@@ -282,17 +282,13 @@ hr {
       margin-top: 29px;
     }
 
-    .mailing-list {
+    .message-appendix {
+      opacity: 0;
       margin-top: 52px;
 
       strong {
         display: block;
         margin-bottom: 10px;
-      }
-
-      .mailing-list-email-field {
-        width: 230px;
-        margin-right: 5px;
       }
     }
 
@@ -332,9 +328,11 @@ hr {
         @include animation-fill-mode(both);
       }
 
-      .mailing-list {
-        @include animation(fade-in 1.5s ease-in-out $transition-speed * 25);
-        @include animation-fill-mode(both);
+      .message-appendix {
+        &.visible {
+          @include animation(fade-in 1.5s ease-in-out $transition-speed * 25);
+          @include animation-fill-mode(both);
+        }
       }
     }
   }
@@ -653,16 +651,16 @@ hr {
       margin-top: 10px;
     }
 
-    &.game-over .mailing-list {
+    &.game-over .message-appendix {
       margin-top: 25px;
     }
 
-    .mailing-list {
+    .message-appendix {
       margin-top: 10px;
+    }
 
-      .mailing-list-email-field {
-        width: 180px;
-      }
+    .sosiski-link {
+      display: block;
     }
   }
 

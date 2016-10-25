@@ -239,14 +239,14 @@ hr {
   .game-message .lower {
     display: block;
     margin-top: 29px; }
-  .game-message .mailing-list {
+  .game-message .message-appendix {
+    opacity: 0;
     margin-top: 52px; }
-    .game-message .mailing-list strong {
+  .game-message .sosiski-link {
+    display: block; }
+    .game-message .message-appendix strong {
       display: block;
       margin-bottom: 10px; }
-    .game-message .mailing-list .mailing-list-email-field {
-      width: 230px;
-      margin-right: 5px; }
   .game-message a {
     display: inline-block;
     background: #8f7a66;
@@ -278,7 +278,7 @@ hr {
       -webkit-animation-fill-mode: both;
       -moz-animation-fill-mode: both;
       animation-fill-mode: both; }
-    .game-message.game-won .mailing-list, .game-message.game-over .mailing-list {
+    .game-message.game-won .message-appendix, .game-message.game-over .message-appendix.visible {
       -webkit-animation: fade-in 1.5s ease-in-out 2500ms;
       -moz-animation: fade-in 1.5s ease-in-out 2500ms;
       animation: fade-in 1.5s ease-in-out 2500ms;
@@ -709,14 +709,11 @@ hr {
     .game-message .lower {
       display: block;
       margin-top: 29px; }
-    .game-message .mailing-list {
+    .game-message .message-appendix {
       margin-top: 52px; }
-      .game-message .mailing-list strong {
+      .game-message .message-appendix strong {
         display: block;
         margin-bottom: 10px; }
-      .game-message .mailing-list .mailing-list-email-field {
-        width: 230px;
-        margin-right: 5px; }
     .game-message a {
       display: inline-block;
       background: #8f7a66;
@@ -748,7 +745,7 @@ hr {
         -webkit-animation-fill-mode: both;
         -moz-animation-fill-mode: both;
         animation-fill-mode: both; }
-      .game-message.game-won .mailing-list, .game-message.game-over .mailing-list {
+      .game-message.game-won .message-appendix, .game-message.game-over .message-appendix.visible {
         -webkit-animation: fade-in 1.5s ease-in-out 2500ms;
         -moz-animation: fade-in 1.5s ease-in-out 2500ms;
         animation: fade-in 1.5s ease-in-out 2500ms;
@@ -883,12 +880,10 @@ hr {
       margin-top: 10px !important; }
     .game-message.game-won .score-sharing {
       margin-top: 10px; }
-    .game-message.game-over .mailing-list {
+    .game-message.game-over .message-appendix {
       margin-top: 25px; }
-    .game-message .mailing-list {
+    .message-appendix {
       margin-top: 10px; }
-      .game-message .mailing-list .mailing-list-email-field {
-        width: 180px; }
 
   .sharing > iframe, .sharing > span, .sharing > form {
     display: block;
