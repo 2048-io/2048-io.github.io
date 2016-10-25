@@ -185,6 +185,13 @@ GameManager.prototype.move = function (direction) {
 
     if (!this.movesAvailable()) {
       this.over = true; // Game over!
+
+      if (this.won) {
+        window.yandexMetrika.reachGoal('player-won');
+      }
+      else {
+        window.yandexMetrika.reachGoal('player-lost');
+      }
     }
 
     this.actuate();
