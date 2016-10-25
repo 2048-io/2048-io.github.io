@@ -3,6 +3,7 @@ window.requestAnimationFrame(function () {
   new GameManager(4, KeyboardInputManager, HTMLActuator, LocalStorageManager);
 
   // TODO: This code is in need of a refactor (along with the rest)
+  /*
   var storage     = new LocalStorageManager;
   var noticeClose = document.querySelector(".notice-close-button");
   var notice      = document.querySelector(".app-notice");
@@ -15,4 +16,5 @@ window.requestAnimationFrame(function () {
       ga("send", "event", "notice", "closed");
     });
   }
+  */
 });
